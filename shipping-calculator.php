@@ -120,9 +120,7 @@ add_shortcode("calculator_form", "calculator_form_shortcode");
 // Enqueue styles for the form
 function enqueue_custom_form_styles()
 {
-    wp_enqueue_style(
-        "custom-form-styles",
-        plugin_dir_url(__FILE__) . "admin/assets/css/styles.css"
-    );
+    wp_enqueue_style('custom-style', plugins_url('shipping-calculator/admin/assets/css/style.css'));
+
 }
 add_action("wp_enqueue_scripts", "enqueue_custom_form_styles");
