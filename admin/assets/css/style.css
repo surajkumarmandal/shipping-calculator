@@ -1,59 +1,248 @@
 /* styles.css */
 
 .custom-form-container {
-    display: flex;
-    justify-content: space-between;
-    max-width: 800px;
-    margin: 20px auto;
-}
-
-.custom-form {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.column {
-    flex: 1;
-    margin-right: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+    max-width: 1200px !important;
+    margin: 0 auto;
+    overflow: hidden;
+
 }
 
-table, th, td {
-    border: 1px solid #ddd;
+.first-div {
+    width: 40%;
+    float: left;
+    background-color: #ffffff;
+    height: auto;
+
 }
 
-th, td {
+.second-div {
+    width: 60%;
+    float: left;
+    background-color: #ffffff;
+    height: 100vh;
+
+}
+
+.ship-to-hr {
+    border: 0;
+    height: 1px !important;
+    background-color: black !important;
+    padding: 0 !important;
+}
+
+.input-element {
+    display: flex;
+}
+
+.imgd {
+    background-color: #ffd033;
+    height: 38px;
+    width: 37px;
+    margin-left: 5px;
+    margin-top: 24px;
+    padding: 5px 10px;
+}
+
+.inputd input {
+    height: 30px;
+}
+.inputdcity input {
+    height: 30px;
+    width: 18vw;
+}
+
+.container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.where {
+    background-color: #bebebe;
     padding: 10px;
-    text-align: left;
 }
 
-input[type="text"],
-select {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0 10px 0;
-    box-sizing: border-box;
+.where h1 {
+    font-size: 16px;
+    margin: 0;
 }
 
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
+.where-box {
+    background-color: #ffffff;
+    min-height: 70px;
+}
+
+.where-box p {
+    padding: 10px;
+}
+.container-box-main {
+    margin-right: 6px;
+    border: 1px solid black;
+}
+.second-container-box {
+    margin-right: 10px !important;
+}
+
+.container-box {
+    margin: 6px 0;
+    border: 1px solid black;
+}
+
+.form1 {
+    background-color: rgb(254, 254, 254);
+    padding: 0px 20px 20px;
+}
+
+.form1 label {
+    font-weight: 500;
+
+}
+
+.buttonm {
+    display: flex;
+    margin: 5px;
+}
+
+.updateb {
+    background: #ffd033 !important;
+    border-color: #ffd033 !important;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06), 0px 4px 12px -2px rgba(0, 0, 0, 0.08), 0px 15px 32px -3px rgba(0, 0, 0, 0.08) !important;
+    padding: 8px !important;
+    border-radius: 15px;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
+    height: 40px;
 }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
+.clearb {
+    background: #919191 !important;
+    border-color: #ffd033 !important;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06), 0px 4px 12px -2px rgba(0, 0, 0, 0.08), 0px 15px 32px -3px rgba(0, 0, 0, 0.08) !important;
+    padding: 8px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.sandbox-container-date {
+    width: 90% !important;
+}
+
+.box-input1, .box-input2, .box-input3 {
+    background-image: none !important;
+    width: 44px !important;
+    padding-right: 0 !important;
+}
+
+.shipping-dropdown {
+    background-image: none !important;
+    padding-right: 0 !important;
+    margin: 10px 0;
+}
+
+.form-control.item-box-input.is-invalid {
+    border: 1px solid red !important;
+}
+
+.error-message-details {
+    display: none;
+}
+
+.error-message-details.is-invalid{
+    color: red !important;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.weight-error-message-details {
+    color: red;
+}
+
+.calender__icon {
+    position: absolute;
+    right: -10%;
+    top: 0;
+    border: 1px solid;
+    padding: 10px 10px;
+}
+
+.editForm {
+    margin-left: 42% !important;
+    display: none;
+}
+
+.box-details {
+    margin: 10px;
+}
+
+.shipping-info h3 {
+    font: 0.9rem Arial, sans-serif;
+}
+  
+.shipping-info p {
+    font-size: 12px;
+    line-height: 0;
+    padding: 2px;
+}
+
+
+.btnAdd {
+    margin-top: 24px;
+    margin-left: 12px;
+    height: 40px;
+    border: 1px solid #0d6efd !important;
+}
+.btnDelete {
+    margin-top: 24px;
+    margin-left: 12px;
+    height: 40px;
+    border: 1px solid #dc3545 !important;
+}
+
+.box-input {
+    width: 40px;
+    margin-left: 20px;
+}
+ 
+.box-add{
+    margin-top: 34px;
+    margin-left: 20px;
+ }
+
+.form1 input {
+
+    margin-bottom: 6px;
+
+}
+
+
+.box1 {
+    padding: 10px;
+    background-color: #bebebe;
+}
+
+/* table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.div-p {
+    padding: 10px;
 }

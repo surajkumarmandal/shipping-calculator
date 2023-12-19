@@ -51,6 +51,8 @@ function create_countries_table()
                     maritime_processing_fee DECIMAL(10,2) NOT NULL,
                     maritime_duty DECIMAL(10,2) NOT NULL,
                     service_type varchar(200) NOT NULL,
+                    insurance_cost NOT NULL,
+                    dutty_tax NOT NULL,
                     PRIMARY KEY (id)
                 )";
 
@@ -67,6 +69,7 @@ function delete_countries_table()
 
     $wpdb->query("DROP TABLE IF EXISTS $table_name");
 }
+
 
 // Enqueue jQuery in the admin panel
 function custom_api_enqueue_scripts()
@@ -121,6 +124,18 @@ add_shortcode("calculator_form", "calculator_form_shortcode");
 function enqueue_custom_form_styles()
 {
     wp_enqueue_style('custom-style', plugins_url('shipping-calculator/admin/assets/css/style.css'));
-
+   
+    wp_enqueue_style('font-awesome-style', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+    wp_enqueue_style('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css');
+    
+    wp_enqueue_style( 'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css');
+	wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' );
+    wp_enqueue_script( 'jquery-js', 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js' );
+    wp_enqueue_script( 'moment-js', 'http://momentjs.com/downloads/moment.min.js' );
+    wp_enqueue_script( 'bootstrap-datepicker-js', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js' );
+    wp_enqueue_script('custom-style', plugins_url('shipping-calculator/admin/assets/js/shipping-calculator.js'));
+  
 }
 add_action("wp_enqueue_scripts", "enqueue_custom_form_styles");
+
+// function my_plugin_activate() {
