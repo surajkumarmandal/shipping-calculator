@@ -337,6 +337,7 @@ $(document).ready(function() {
     })
 
     $('#itemType').change(function(){
+		$('.totalCartItem').attr('data-count', 0)
 		weightDetailsobjArry = [];
 		const errorWeightMessage = $(`#error-messgage-weight`);
         let itemNoValue = $(this).val();
