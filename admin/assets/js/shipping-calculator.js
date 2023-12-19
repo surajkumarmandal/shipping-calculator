@@ -382,6 +382,8 @@ $(document).ready(function() {
 		}
 		if (totalPrice > 0) {
 			$('.totalPrice').html(`<b>Total:</b> $${totalPrice}<br><button type="button" class="btn btn-primary payNow">Check out</button>`);
+		} else {
+			$('.totalPrice').html('');
 		}
 		
 	}
