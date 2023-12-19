@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	let calculateSizeFn = true;
 	let shippingCartList = localStorage.getItem('shippingCart');
 	if (shippingCartList) {
 		let itemTypeSelcted = localStorage.getItem('itemTypeSelcted');
@@ -337,16 +338,19 @@ $(document).ready(function() {
     })
 
     $('#itemType').change(function(){
+		
 		$('.totalCartItem').attr('data-count', 0)
 		weightDetailsobjArry = [];
 		const errorWeightMessage = $(`#error-messgage-weight`);
         let itemNoValue = $(this).val();
         if(itemNoValue === 'single') {
+			calculateSizeFn = true;
             $('.packagingTypeList').show();
             $('.calculateSize').show();
             $('.box-details-element-item').empty();
             itemNumeber = 0;
         } else {
+			calculateSizeFn = false;
             itemNumeber = 0;
             $('.box-details-element-item').empty();
             $('.packagingTypeList').hide();
@@ -362,7 +366,11 @@ $(document).ready(function() {
 
     $(document).on('click', '.calculateSize', function(){
         itemNumeber = 0;
-        addItem(0, false);
+		if (calculateSizeFn === true) {
+			calculateSizeFn = false;
+			addItem(0, false);
+		}
+       
     })
 
 	function showItemCart(responseItem, itemTypeSelcted, isAddToCart=false) {
@@ -381,7 +389,7 @@ $(document).ready(function() {
 			$('#parcel_send_calculated').append(costDetailsCal);
 		}
 		if (totalPrice > 0) {
-			$('.totalPrice').html(`<b>Total:</b> $${totalPrice}<br><button type="button" class="btn btn-primary payNow">Check out</button>`);
+			$('.totalPrice').html(`<b>Total:</b> $${totalPrice.toFixed(2)}<br><button type="button" class="btn btn-primary payNow">Check out</button>`);
 		} else {
 			$('.totalPrice').html('');
 		}
