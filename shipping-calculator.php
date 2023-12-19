@@ -51,8 +51,8 @@ function create_countries_table()
                     maritime_processing_fee DECIMAL(10,2) NOT NULL,
                     maritime_duty DECIMAL(10,2) NOT NULL,
                     service_type varchar(200) NOT NULL,
-                    insurance_cost NOT NULL,
-                    dutty_tax NOT NULL,
+                    insurance_cost int(11) NOT NULL DEFAULT 0,
+                    dutty_tax int(11) NOT NULL DEFAULT 0,
                     PRIMARY KEY (id)
                 )";
 
