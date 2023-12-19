@@ -1,5 +1,14 @@
 $(document).ready(function() {
-
+	let shippingCartList = localStorage.getItem('shippingCart');
+	if (shippingCartList) {
+		let itemTypeSelcted = localStorage.getItem('itemTypeSelcted');
+		if(itemTypeSelcted) {
+			let cartDataList = JSON.parse(shippingCartList);
+			$('.totalCartItem').attr('data-count', cartDataList.length)
+			showItemCart(cartDataList, itemTypeSelcted, true);
+		}
+	}
+	
     let destination_country = [];
 	//const apiUrl = "<?= esc_url_raw(rest_url('/shipping-calculator/countries/v1')); ?>";
 
@@ -117,7 +126,9 @@ $(document).ready(function() {
 		
 		let weightDetailsObj = {};
 		let itemTypeSelcted =  $('#itemType').val();
-		
+		if (itemTypeSelcted !== 'single') {
+			weightDetailsobjArry = [];
+		}
 		console.log(weightDetailsObj)
 		for (let i = 0; i < shippingDetails.length; i++) {
 			const input = $(`#${shippingDetails[i].name}`);
@@ -138,19 +149,20 @@ $(document).ready(function() {
 			} else {
 				if(itemTypeSelcted !== 'single') {
 					if (!!shippingDetails[i].name.includes('width') ) {
-						weightDetailsObj['width'] = input.val();
+						weightDetailsObj['width'] = shippingDetails[i].value;
 					} else if (!!shippingDetails[i].name.includes('height')) {
-						weightDetailsObj['height'] = input.val();
+						weightDetailsObj['height'] = shippingDetails[i].value;
 					} else if (!!shippingDetails[i].name.includes('depth')) {
-						weightDetailsObj['depth'] = input.val();
+						weightDetailsObj['depth'] = shippingDetails[i].value;
 					}
 				}
 				errorMessage.hide();
 				errorMessage.removeClass("is-invalid");
 				input.removeClass("is-invalid"); // Remove error class
 			}
-			if (i % 3 === 0 && Object.keys(weightDetailsObj).length > 0) {
+			if (Object.keys(weightDetailsObj).length === 3) {
 				weightDetailsobjArry.push(weightDetailsObj);
+				weightDetailsObj = {};
 			}
 		}
 		const packagingTypeListSRValue = $('#packagingTypeListSR').val();
@@ -160,7 +172,11 @@ $(document).ready(function() {
 		let weightError = [];
 		weightDetailsobjArry.forEach(item => {
 			
-			let weigthCal = ((Number(item.width) * Number(item.height) * Number(item.depth)) / 165);
+			let weigthCal = 0;
+			if (!!item.width && !!item.height && !!item.depth) {
+				weigthCal = ((Number(item.width) * Number(item.height) * Number(item.depth)) / 165);
+			}
+
 			
 			if(itemTypeSelcted === 'single') {
 				if (weigthCal && ( weigthCal > packagingTypeListSRValue)) {
@@ -181,7 +197,9 @@ $(document).ready(function() {
 			
 		});
 		if(itemTypeSelcted !== 'single') {
-			if(weightError.length > 0 || weightError.findIndex(weigthValue => weigthValue != null || weigthValue > 50)) {
+			if(weightError.length > 0 && weightError.findIndex(weigthValue => typeof weigthValue === 'object' || weigthValue > 50) !== -1) {
+				isValid = false;
+			} else if (weightError.length === 0 ) {
 				isValid = false;
 			} else {
 				isValid = true;
@@ -207,16 +225,10 @@ $(document).ready(function() {
 				success: function(response) {
 					// Handle the API response
 					console.log(response);
-				
-				 if (itemTypeSelcted === 'single') {
-					let costDetailsCal = `<tr>
-					<td>${response[0].shippingData.service_type} <br> Latest Pickup Time: ${moment.utc(new Date(response[0].shippingData.shippingDateValue)).format("dddd, LL")}<br> Schedule by : ${moment.utc(new Date(response[0].shippingData.shippingDateValue)).format("dddd, LL")}</td>
-					<td>Days In Transit : Delivered By:</td>
-					<td><img src="${response[0].parcel_file_url}" height="50" width="50">$${response[0].totalCost.toFixed(2)}</td>
-				  </tr>
-				 `;
-					$('#parcel_send_calculated').html(costDetailsCal);
-				 }
+					localStorage.setItem('shippingCart' , JSON.stringify(response));
+					localStorage.setItem('itemTypeSelcted' , itemTypeSelcted);
+					
+					showItemCart(response, itemTypeSelcted);
 				 
 				},
 				error: function(error) {
@@ -229,7 +241,7 @@ $(document).ready(function() {
 		let dataId = $(this).data('id');
 		const input = $(`#${dataId}`);
 		const errorMessage = $(`#error-messgage-${dataId}`);
-		if (!input.val()) {
+		if (!input.val() || input.val() <= 0) {
 			if (dataId.includes('width')) {
 				errorMessage.text("Width is required.");
 			} else if (dataId.includes('height')) {
@@ -351,5 +363,37 @@ $(document).ready(function() {
         itemNumeber = 0;
         addItem(0, false);
     })
+
+	function showItemCart(responseItem, itemTypeSelcted, isAddToCart=false) {
+		$('#parcel_send_calculated').html('');
+		let totalPrice = 0;
+		for (let i = 0; i < responseItem.length; i++) {
+			let addCardDeleteBtn = isAddToCart ? `<a href="javascript:void(0)" class="deleteaddToCard" data-id="${i}"><i class="fa fa-trash-o" style="font-size:30px;color:red"></i></a>` : '';
+			let costDetailsCal = `<tr>
+				<td>${addCardDeleteBtn}</td><td>${responseItem[i].shippingData.service_type} <br> Latest Pickup Time: ${moment.utc(new Date(responseItem[i].shippingData.shippingDateValue)).format("dddd, LL")}<br> Schedule by : ${moment.utc(new Date(responseItem[i].shippingData.shippingDateValue)).format("dddd, LL")}</td>
+				<td>Days In Transit : Delivered By: <br><b>Total Weight:</b> ${itemTypeSelcted !== 'single' ? responseItem[i].totalWeight.toFixed(2) : responseItem[i].totalWeight} Pound</td>
+				<td><img src="${responseItem[i].parcel_file_url}" height="50" width="50"><br>$${responseItem[i].totalCost.toFixed(2)}</td>
+			</tr>
+			`;
+			totalPrice +=  Number(responseItem[i].totalCost.toFixed(2));
+			
+			$('#parcel_send_calculated').append(costDetailsCal);
+		}
+		if (totalPrice > 0) {
+			$('.totalPrice').html(`<b>Total:</b> $${totalPrice}<br><button type="button" class="btn btn-primary payNow">Check out</button>`);
+		}
+		
+	}
+
+	$(document).on('click', '.deleteaddToCard', function (){
+		let cartId = $(this).data('id');
+		let shippingCartList = localStorage.getItem('shippingCart');
+		let cartDataList = JSON.parse(shippingCartList);
+		cartDataList.splice(cartId, 1);
+		$('.totalCartItem').attr('data-count', cartDataList.length)
+		localStorage.setItem('shippingCart',JSON.stringify(cartDataList));
+		let itemTypeSelcted = localStorage.getItem('itemTypeSelcted');
+		showItemCart(cartDataList, itemTypeSelcted, true);
+	})
 
 });
